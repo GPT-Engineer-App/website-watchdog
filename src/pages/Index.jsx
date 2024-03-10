@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { Box, Button, Container, VStack, HStack, Input, Heading, Text, Select, useToast, List, ListItem, IconButton, FormControl, FormLabel, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { FaPlus, FaTrash } from "react-icons/fa";
+const sendEmail = (recipient, subject, body) => {
+  return new Promise((resolve, reject) => {
+    console.log(`Sending email to ${recipient} with subject: "${subject}" and body: "${body}"`);
+
+    setTimeout(() => {
+      resolve();
+    }, 1000);
+  });
+};
 
 const Index = () => {
   const [websiteList, setWebsiteList] = useState([]);
@@ -13,6 +22,17 @@ const Index = () => {
   const addWebsite = () => {
     if (newWebsite) {
       const newSite = { url: newWebsite, frequency, threshold };
+      sendEmail(email, "Tracking Service Started", `Hello to the tracking service, the "${newSite.url}" started a tracker with the following parameters: Frequency - ${newSite.frequency} requests per hour, Threshold - ${newSite.threshold} characters change.`)
+        .then(() => console.log("Email sent successfully"))
+        .catch((error) => {
+          toast({
+            title: "Email Sending Failed",
+            description: "We were not able to send the email notification.",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        });
       setWebsiteList([...websiteList, newSite]);
       toast({
         title: "Welcome to the Tracking Service",
@@ -32,6 +52,18 @@ const Index = () => {
   };
 
   const handleSaveSettings = () => {
+    sendEmail(email, "Monitoring Settings Saved", "Your monitoring settings have been saved successfully.")
+      .then(() => console.log("Email sent successfully"))
+      .catch((error) => {
+        toast({
+          title: "Email Sending Failed",
+          description: "We were not able to send the email notification.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+
     // Normally you would send this data to your server here
     toast({
       title: "Settings Saved.",
