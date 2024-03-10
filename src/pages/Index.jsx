@@ -12,7 +12,15 @@ const Index = () => {
 
   const addWebsite = () => {
     if (newWebsite) {
-      setWebsiteList([...websiteList, { url: newWebsite, frequency, threshold }]);
+      const newSite = { url: newWebsite, frequency, threshold };
+      setWebsiteList([...websiteList, newSite]);
+      toast({
+        title: "Welcome to the Tracking Service",
+        description: `Hello to the tracking service, the "${newSite.url}" started a tracker with the following parameters: Frequency - ${newSite.frequency} requests per hour, Threshold - ${newSite.threshold} characters change.`,
+        status: "info",
+        duration: 7000,
+        isClosable: true,
+      });
       setNewWebsite("");
       setFrequency(1);
       setThreshold(10);
